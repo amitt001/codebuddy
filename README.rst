@@ -26,8 +26,26 @@ Technical specification
 Screenshots
 ++++++++++++
 
+.. image:: screenshots/home.png
+    :height: 300px
+    :width: 400px
+    :alt: CodeBuddy Home Page
+    :align: center
+
 .. image:: screenshots/code.png
     :height: 300px
     :width: 400px
-    :alt: NQL algorithm flow chart
+    :alt: codebuddy code pad
+    :align: center    
+
+.. image:: screenshots/doc.png
+    :height: 300px
+    :width: 400px
+    :alt: codebuddy docpad
+    :align: center
+
+.. image:: screenshots/paste.png
+    :height: 300px
+    :width: 400px
+    :alt: codebuddy pastepad
     :align: center
