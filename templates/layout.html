@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <!--Meta-->
+    <meta charset="UTF-8">
+    <meta lang="en">
+    {% if title %}
+    <title>{{ title }} - Code with Buddy</title>
+    {% else %}
+    <title>CodeBuddy - Code with Buddy</title>
+    {% endif %}
+    <!--Mobile Friendly-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Style-->
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <!--code-->
+
+    <script src="../static/js/ace-builds-master/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <!--code-end-->
+
+    <!--socket import-->
+    <!--end-->
+
+    <style>
+    
+    body{
+        <!--background-color: #C6E2EE;//#97CD0C;//#373F46;-->
+    }
+
+    a.headerlink {
+    color: #A5DF00;
+    text-decoration: none;
+    padding: 10px;
+    font-size: 20px;
+    }
+    a:hover.headerlink {
+    color: #0080FF;#4183C4;
+    text-decoration: underline;
+    }
+    
+    .header{
+    overflow:hidden; 
+    width: auto; 
+    height: auto; 
+    position: relative;     
+    margin-top:0; padding-top:0; 
+    background-color: #242424;
+ //#F5F5F5;
+    }
+
+    .editor{
+        padding-top: 10px;    
+    }
+    .wrapper {
+            text-align: center;
+    }
+
+    .button {
+            position: absolute:
+                top: 50%;
+    }
+    </style>
+</head>
+<body>
+    <div class="header container">
+        <a href="http://127.0.0.1:5000/"><h1 class="text-left" style="display: inline-block;">CodeBuddy</h1></a>
+        <div style="display: inline-block; float: right; padding-right: 100px; padding-top: 20px;">
+            <a class="headerlink" href="contact.html">Contact</a>
+            <a class="headerlink" href="about">About</a>
+        </div>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
+</body>
+</html>

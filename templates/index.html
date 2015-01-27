@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <h1 class="text-center">CodeBuddy</h1><br>
+
+    <div class="container-fluid" style="max-width: 600px; margin: 0 auto 10px;">
+
+    <form method="post" action="">
+        <input type="submit" class="btn btn-info btn-lg btn-block" name="public" value="New Public Codepad"><br><br>
+        <input type="submit" class="btn btn-success btn-lg btn-block" name="docpad" value="New Document Pad"><br><br>
+        <input type="submit" class="btn btn-warning btn-lg btn-block" name="paste" value="Paste Pad">
+    </form>
+
+    </div>
+{% endblock %}

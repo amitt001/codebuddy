@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="editor">
+    
+    <pre id="editor1" style="width: 50%; height: 500px; display: inline-block;"></pre>
+    
+    <pre id="editor2" style="width: 49.6%; height: 500px; display: inline-block;"></pre>
+</div>
+<div class="wrapper">
+    <button type="button" onclick="fork()" class="btn btn-primary button">Fork</button>
+</div>
+<script>
+
+var editor1 = ace.edit("editor1");
+editor1.setTheme("ace/theme/twilight");
+editor1.getSession().setMode("ace/mode/javascript");
+
+var editor2 = ace.edit("editor2");
+editor2.setTheme("ace/theme/twilight");
+editor2.getSession().setMode("ace/mode/javascript");
+
+</script>
+
+<script>
+function fork() {
+    var text =  editor2.getSession().getValue();
+    editor1.getSession().setValue( text );
+}
+</script>
+
+
+<!--sockets-->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+
+
+
+    $(document).ready(function(){
+    	var flag = makeid();
+    	var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+
+    	socket.on('connect', function() {
+    		var code = editor1.getSession().getValue();
+            socket.emit('my event', {id: flag});
+        });
+
+    	socket.on('my response', function(msg) {
+    		$('#log').append('<br>Received #' + msg.count + ': ' + msg.data);
+		});
+
+		socket.on('sync response', function(msg) {
+			if (msg['id'] != flag) {
+				editor2.getSession().setValue( msg['data'] );
+			};
+		});
+
+		function ping(){
+			socket.emit('pingback', {id: flag});
+		}
+
+		window.setInterval(function(){
+  			ping()
+		}, 5000);
+
+		window.onbeforeunload = function() {
+          socket.emit('removeid', {id: flag});
+      	};
+
+		socket.on('error response', function(msg){
+			alert(msg['error']);
+		});
+
+		function makeid()
+		{
+    		var text = "";
+    		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    		for( var i=0; i < 5; i++ )
+        	text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    		return text;
+		}		
+
+		$('#editor1').keyup(function(){
+			var code = editor1.getSession().getValue();
+			socket.emit('sync', {data: code, id : flag});
+		});
+    });
+	</script>
+<!--sockets-end-->
+
+
+{% endblock %}

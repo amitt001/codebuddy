@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block content %}
+<style type="text/css">
+textarea#idtext {
+	width: 80%;
+	height: 440px;
+	border: 3px solid #cccccc;
+	padding: 5px;
+	font-family: Tahoma, sans-serif;
+	background-position: bottom right;
+	background-repeat: no-repeat;
+	margin-top: 1%;
+}
+</style>
+
+<div align="center">
+
+	<textarea name="styled-textarea" id="idtext" onfocus="this.value=''; setbg('#e5fff3');" onblur="setbg('white')" spellcheck=false>Paste your code, notes or anything...</textarea><br>
+	
+<form id="pastesubmit" method="POST" action="#">
+	<div class="" style="max-width: 150px; margin: 10px auto 0;">
+		<input type="submit" class="btn btn-info btn-lg btn-block" name="paste" value="Paste"><br><br>
+	</div>
+</form>
+</div>
+<!---->
+<script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function(){
+
+            namespace = '/test'; 
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+
+            socket.on('my response', function(msg) {
+                window.location.href = window.location.href;
+
+            });
+
+            $('form#pastesubmit').submit(function(event) {
+                socket.emit('dbpaste', {data: $('#idtext').val()});
+                return false;
+            });
+        });
+    </script>
+<!---->
+
+{% endblock %}
