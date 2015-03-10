@@ -11,7 +11,6 @@
     <button type="button" onclick="fork()" class="btn btn-primary button">Fork</button>
 </div>
 <script>
-
 var editor1 = ace.edit("editor1");
 editor1.setTheme("ace/theme/twilight");
 editor1.getSession().setMode("ace/mode/javascript");
@@ -36,10 +35,9 @@ function fork() {
 
     <script type="text/javascript" charset="utf-8">
 
-
-
     $(document).ready(function(){
-    	var flag = makeid();
+        var flag1 = '{{ sessionid }}';
+        var flag = makeid();
     	var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
 
     	socket.on('connect', function() {
@@ -52,8 +50,10 @@ function fork() {
 		});
 
 		socket.on('sync response', function(msg) {
-			if (msg['id'] != flag) {
+			if (msg['id'] != flag1) {
+                if (msg['url'] == flag) {
 				editor2.getSession().setValue( msg['data'] );
+                };
 			};
 		});
 
@@ -70,7 +70,10 @@ function fork() {
       	};
 
 		socket.on('error response', function(msg){
-			alert(msg['error']);
+            if (msg['block'] == 'yes') {
+                /**condition to stop response from already used pad**/
+                alert(msg['error']);
+            };
 		});
 
 		function makeid()
@@ -80,8 +83,8 @@ function fork() {
 
     		for( var i=0; i < 5; i++ )
         	text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    		return text;
+            text = window.location.pathname
+    		return text.split('/')[2];
 		}		
 
 		$('#editor1').keyup(function(){
