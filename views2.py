@@ -7,7 +7,8 @@ from flask import Flask, render_template, session, request, redirect, url_for, s
 from flask.ext.socketio import SocketIO, emit
 import random
 import string
-import mongosaveapi
+import mongosave
+import psycopgsave
 
 
 app = Flask(__name__)
@@ -34,9 +35,8 @@ def login():
             user_pass = request.form.get('password', None)
 
             if len(user_email) > 5 and len(user_pass) > 5:
-                dbclass = mongosaveapi.mongosave()
+                dbclass = mongosave.mongosave()
                 session_id = dbclass.userlogin(user_email, user_pass)
-                print 'SESSION_ID', session_id, '\n'
                 if (session_id == -1):
                     return 'ERROR: RELOAD'
                 if (session_id == -2):
@@ -49,7 +49,8 @@ def login():
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
-    session.pop('id', None)
+    session.pop('useremail', None)
+    session.pop('password', None)
     return redirect(url_for('index'))
 
 @app.route('/publicpad/<padid>') #unique url
@@ -57,9 +58,8 @@ def publicpad(padid):
     session_id = session.get('id', 0)
     if not session_id:
         return redirect(url_for('login'))
-    dbclass = mongosaveapi.mongosave()
+    dbclass = mongosave.mongosave()
     valid_check = dbclass.login_check(session_id)
-    print '%%%%%%%%%%%%%%%', session_id, '\n'
     if valid_check == -1:
         return "Please login again"
     else:
@@ -75,9 +75,9 @@ def textpad(padid):
 def pastepad(padid):
     global uniqid 
     uniqid = padid
-    checkpad = mongosaveapi.mongosave()
+    #checkpad = mongosave.mongosave()
+    checkpad = psycopgsave.psycopg()
     pasteres =  checkpad.check(padid)#x random data
-    print '######################', pasteres, padid
     if pasteres:
         return render_template("pasteresult.html", result=pasteres)
     else:
@@ -109,8 +109,7 @@ def local_client_connect():
 
 @socketio.on('dbpaste', namespace='/test')
 def test_message(message):
-    saveobj = mongosaveapi.mongosave()
-    print '**********', uniqid, '*****************************************************************************'
+    saveobj = psycopgsave.psycopg()
     saveobj.save(uniqid, message['data'])
     emit('my response', {'data': message['data']})
 
@@ -128,7 +127,6 @@ def sync(message):
     #########This is not executed for 3rd pad. look into it#########
     data = masterdict.get(message['id'])
     session_id = session['id']
-    print 'PRINT ', data, session_id
     if not data:
         masterdict[message['id']] = []
         masterdict[message['id']].append(session_id)

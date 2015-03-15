@@ -16,7 +16,7 @@ class mongosave:
 
 	def userlogin(self, email, password):
 		#self.collection = self.db['user_login']
-		self.collection = self.db['testdb']
+		self.collection = self.db['codebuddy_collect']
 		try:
 			result = list(self.collection.find({'user_email': email}))
 			if not len(result):
@@ -38,7 +38,7 @@ class mongosave:
 			return -1
 
 	def login_check(self, _id):
-		self.collection = self.db['testdb']
+		self.collection = self.db['codebuddy_collect']
 		result = list(self.collection.find({'_id': ObjectId(_id)}))
 		print str(result[0].get('_id'))
 		if str(result[0].get('_id')) == _id:
