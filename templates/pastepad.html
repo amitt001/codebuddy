@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} 
 {% block content %}
 <style type="text/css">
 textarea#idtext {
@@ -14,8 +14,11 @@ textarea#idtext {
 </style>
 
 <div align="center">
-
+    {% if result %}
+    <textarea name="styled-textarea" id="idtext" setbg('#e5fff3');" onblur="setbg('white')" spellcheck=false>{{result}}</textarea><br>
+    {% else %}
 	<textarea name="styled-textarea" id="idtext" onfocus="this.value=''; setbg('#e5fff3');" onblur="setbg('white')" spellcheck=false>Paste your code, notes or anything...</textarea><br>
+    {% endif %}
 	
 <form id="pastesubmit" method="POST" action="#">
 	<div class="" style="max-width: 150px; margin: 10px auto 0;">

@@ -12,7 +12,7 @@ import mongosaveapi
 
 app = Flask(__name__)
 app.debug = True
-app.config['SECRET_KEY'] = 'xxxxxx'
+app.config['SECRET_KEY'] = 'xxxxx'
 socketio = SocketIO(app)
 thread = None
 masterdict = {}
@@ -42,6 +42,9 @@ def login():
                 if (session_id == -2):
                     return 'User already exists and wrong password for this email'
                 session['id'] = session_id
+                #this condition for directly going to publicpad using link
+                if request.args.get('idofpad'):
+                    return redirect(url_for('publicpad', padid=request.args.get('idofpad')))    
                 return redirect(url_for('index'))
             else:
                 return render_template('login.html')
@@ -56,7 +59,7 @@ def logout():
 def publicpad(padid):
     session_id = session.get('id', 0)
     if not session_id:
-        return redirect(url_for('login'))
+        return redirect(url_for('login', idofpad=padid))
     dbclass = mongosaveapi.mongosave()
     valid_check = dbclass.login_check(session_id)
     print '%%%%%%%%%%%%%%%', session_id, '\n'
@@ -77,8 +80,10 @@ def pastepad(padid):
     uniqid = padid
     checkpad = mongosaveapi.mongosave()
     pasteres =  checkpad.check(padid)#x random data
-    print '######################', pasteres, padid
     if pasteres:
+        if request.form.get('pasteedit', None) == 'Edit':
+            print "**********", pasteres
+            return render_template("pastepad.html", result=pasteres)
         return render_template("pasteresult.html", result=pasteres)
     else:
         return render_template('pastepad.html')

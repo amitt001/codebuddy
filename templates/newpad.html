@@ -1,11 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
-
+<div style="margin-top:10px;margin-right:50%">
+<form method="POST" action="#">
+    <div style="border:1px solid #9c27b0; border-radius:10px;">
+      <div class="checkbox" style="margin-left:10%">
+        <label>
+          <input type="checkbox"> Save
+        </label>
+      </div>
+    </div>
+</form>
+</div>
 <div class="editor">
     
-    <pre id="editor1" style="width: 50%; height: 500px; display: inline-block;"></pre>
+    <pre id="editor1" style="width: 50%; height: 450px; display: inline-block;"></pre>
     
-    <pre id="editor2" style="width: 49.6%; height: 500px; display: inline-block;"></pre>
+    <pre id="editor2" style="width: 49.6%; height: 450px; display: inline-block;"></pre>
 </div>
 <div class="wrapper">
     <button type="button" onclick="fork()" class="btn btn-primary button">Fork</button>
@@ -92,6 +102,7 @@ function fork() {
 			socket.emit('sync', {data: code, id : flag});
 		});
     });
+    alert("How it works?\nVery simple.\nPass the link to your \"Buddy\".\nLeft code box->yours, Right-one->the other person with the link.\nThe code written in left box is visible to the other person.\nYou can fork yor friends code by pressing \"Fork\" button\nEnough talk! Use it, you will understand.\n\nThat \"save\" feature is not working.\n\nA chat feature, online status, save, etc is in pipeline.\n\nIn case of any bug(actually, there are many) please report it. My facebook page is linked. My Github username: amitt001.")
 	</script>
 <!--sockets-end-->
 
