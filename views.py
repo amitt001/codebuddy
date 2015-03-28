@@ -12,7 +12,7 @@ import mongosaveapi
 
 app = Flask(__name__)
 app.debug = True
-app.config['SECRET_KEY'] = 'xxxxx'
+app.config['SECRET_KEY'] = 'xxxxxxxx'
 socketio = SocketIO(app)
 thread = None
 masterdict = {}
@@ -82,7 +82,6 @@ def pastepad(padid):
     pasteres =  checkpad.check(padid)#x random data
     if pasteres:
         if request.form.get('pasteedit', None) == 'Edit':
-            print "**********", pasteres
             return render_template("pastepad.html", result=pasteres)
         return render_template("pasteresult.html", result=pasteres)
     else:
@@ -115,13 +114,12 @@ def local_client_connect():
 @socketio.on('dbpaste', namespace='/test')
 def test_message(message):
     saveobj = mongosaveapi.mongosave()
-    print '**********', uniqid, '*****************************************************************************'
     saveobj.save(uniqid, message['data'])
     emit('my response', {'data': message['data']})
 
 @socketio.on('removeid', namespace='/test')
 def remove_id(message):
-    print 'I am disconnecting\n'
+    print 'disconnecting\n'
     if message['id'] in codepadlst:
         codepadlst[codepadlst.index(message['id'])] = None
 
