@@ -8,7 +8,6 @@ from flask.ext.socketio import SocketIO, emit
 import random
 import string
 import mongosave
-import psycopgsave
 
 
 app = Flask(__name__)
@@ -75,8 +74,7 @@ def textpad(padid):
 def pastepad(padid):
     global uniqid 
     uniqid = padid
-    #checkpad = mongosave.mongosave()
-    checkpad = psycopgsave.psycopg()
+    checkpad = mongosave.mongosave()
     pasteres =  checkpad.check(padid)#x random data
     if pasteres:
         return render_template("pasteresult.html", result=pasteres)
@@ -109,7 +107,7 @@ def local_client_connect():
 
 @socketio.on('dbpaste', namespace='/test')
 def test_message(message):
-    saveobj = psycopgsave.psycopg()
+    saveobj = mongosave.mongosave()
     saveobj.save(uniqid, message['data'])
     emit('my response', {'data': message['data']})
 

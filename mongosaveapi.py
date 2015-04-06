@@ -1,3 +1,13 @@
+'''
+This code conneccts with https://mongolab.com/ api
+
+saves the deployed heroku apps data in mongodb 
+
+For localhost code see mongosave.py
+
+'''
+
+
 import pymongo
 import json
 import requests

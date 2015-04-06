@@ -1,3 +1,8 @@
+'''
+Use this code while running the webapp on localhost 
+with a mongodb sever running
+'''
+
 import pymongo
 from bson.objectid import ObjectId
 from datetime import datetime

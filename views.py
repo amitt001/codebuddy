@@ -1,3 +1,7 @@
+'''
+Backend on heroku. For localhost run views.2py
+'''
+
 from gevent import monkey
 monkey.patch_all()
 
