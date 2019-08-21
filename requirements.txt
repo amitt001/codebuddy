@@ -10,6 +10,6 @@ greenlet==0.4.5
 gunicorn==0.16.1
 itsdangerous==0.24
 pymongo==2.8
-requests==2.6.0
+requests==2.20.0
 urllib3==1.10.2
 wsgiref==0.1.2
